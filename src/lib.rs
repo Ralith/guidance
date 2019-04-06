@@ -58,13 +58,13 @@ pub fn linear_aim<N: RealField>(
 }
 
 /// Change in velocity to steer an in-flight projectile towards `target`
-pub fn linear_steer<N: RealField>(target: &Target<N>, current_velocity: &na::Vector3<N>, target_speed: N) -> Option<(na::Vector3<N>, N)> {
+pub fn linear_steer<N: RealField>(target: &Target<N>, current_velocity: &na::Vector3<N>, average_speed: N) -> Option<(na::Vector3<N>, N)> {
     let target = Target {
         position: target.position,
         velocity: target.velocity + current_velocity,
     };
     let current_speed = current_velocity.norm();
-    let (dir, t) = linear_aim(&target, target_speed)?;
+    let (dir, t) = linear_aim(&target, average_speed)?;
     let goal = dir.into_inner() * current_speed;
     Some((goal - current_velocity, t))
 }
